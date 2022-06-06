@@ -1,0 +1,8 @@
+!prosecuted(Polites)
+!historic(Polites)
+
+historic(Leocrates)
+!cooperate(Leocrates, SecureCity)
+prosecuted(Leocrates)
+!convicted(Leocrates)
+

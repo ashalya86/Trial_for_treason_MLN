@@ -1,0 +1,15 @@
+
+historic(Leocrates)
+historic(Hipparchus)
+historic(Callistrus) 
+!historic(Skolem)
+
+prosecuted(Hipparchus)
+convicted(Hipparchus)
+prosecuted(Callistrus)
+convicted(Callistrus)
+
+!cooperate(Leocrates, SecureCity)
+prosecuted(Leocrates)
+convicted(Leocrates)
+

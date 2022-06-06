@@ -1,0 +1,68 @@
+// Trial 26 with more domCitizen, the latest one, correct one used in the final programme
+//Trial 28, 29, 30, 31 for testing purpose
+
+// domain declarations
+domCitizen = {Polites, Leocrates}
+domInstitution = {Court}
+domIndividualEthos = {Ethos1, Ethos2}
+domInstitutionalEthos = {Ethos3}
+group ={Citizens}
+gProp = {SecureCity_Goal_Holds}
+goal = {SecureCity}
+
+
+//predicate declarations
+individual_ethos(domCitizen, domIndividualEthos!)
+institutional_ethos(domInstitution, domInstitutionalEthos)
+cK(group, gProp)
+group_goal_Proposition(group, goal, gProp)
+groupGoal(group, goal)
+cooperate(domCitizen, goal)
+convicted(domCitizen)
+traitor(domCitizen)
+prosecuted(domCitizen)
+historic(domCitizen)
+
+
+//Background knowledge
+
+cooperate(x, SecureCity) ^ !historic(x) => individual_ethos(x, Ethos1) v individual_ethos(x, Ethos2).
+//!(individual_ethos(x,Ethos1) ^  individual_ethos(x,Ethos2)).
+log(0.05/0.95) !cooperate(x, SecureCity) => !individual_ethos(x, Ethos1) 
+
+log(0.12) individual_ethos(Polites, Ethos1) ^ cooperate(Polites, SecureCity)
+log(0.48) individual_ethos(Polites, Ethos2) ^ cooperate(Polites, SecureCity)
+
+//P(individual_ethos(Polites, Ethos1) ^ cooperate(Polites, SecureCity)) = 0.12
+//P(individual_ethos(Polites, Ethos2) ^ cooperate(Polites, SecureCity)) = 0.48
+
+log(1) institutional_ethos(Court, Ethos3)
+
+
+//Definition
+cK(Citizens, SecureCity_Goal_Holds) ^ group_goal_Proposition(Citizens, SecureCity, SecureCity_Goal_Holds).
+cK(group, gprop) ^ group_goal_Proposition(group, goal, gprop) => groupGoal(group, goal).
+traitor(x) <=> ((EXIST g (groupGoal(Citizens, g) ^ !cooperate(x,g)))).
+
+
+//Rulesb
+//institutional_ethos(Court, Ethos3) <=>  (!(EXIST x (traitor(x) ^ prosecuted(x) ^ !convicted(x)))).
+
+historic(x) ^ traitor(x) ^ prosecuted(x) => (convicted(x) <=> institutional_ethos(Court, Ethos3)).
+
+!historic(x) ^ !individual_ethos(x, Ethos2) ^ cK(Citizens, SecureCity_Goal_Holds) ^ group_goal_Proposition(Citizens, SecureCity,SecureCity_Goal_Holds) => (individual_ethos(x, Ethos1) <=> cooperate(x, SecureCity)).
+
+!historic(x) ^ !individual_ethos(x, Ethos1) ^ cK(Citizens, SecureCity_Goal_Holds) ^ group_goal_Proposition(Citizens, SecureCity,SecureCity_Goal_Holds) => (individual_ethos(x, Ethos2) ^ institutional_ethos(Court, Ethos3) <=> cooperate(x, SecureCity)).
+
+historic(x) <=> !individual_ethos(x, y).
+
+
+
+
+
+ 
+
+
+
+
+

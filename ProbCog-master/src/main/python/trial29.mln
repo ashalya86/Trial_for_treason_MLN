@@ -1,0 +1,47 @@
+// Listing 1 in the paper
+// Domain declarations
+dom_citizen = {Polites, Leocrates, Hipparchus, Callistrus}
+dom_institution = {Court}
+dom_individual_ethos = {Ethos1, Ethos2}
+dom_institutional_ethos = {Ethos3}
+group = {Citizens}
+goal = {SecureCity}
+
+//Predicate declarations
+individual_ethos(dom_citizen, dom_individual_ethos!)
+institutional_ethos(dom_institution, dom_institutional_ethos!)
+ck(group, goal)
+group_goal(group, goal)
+cooperate(dom_citizen, goal)
+convicted(dom_citizen)
+traitor(dom_citizen)
+prosecuted(dom_citizen)
+historic(dom_citizen)
+
+//Background knowledge
+ck(Citizens, group_goal(Citizens, SecureCity)).
+ck(group, group_goal(group, goal)) => group_goal(group, goal).
+
+cooperate(x, SecureCity) ^ !historic(x) => 
+    individual_ethos(x, Ethos1) v individual_ethos(x, Ethos2).
+
+log(0.12) individual_ethos(Polites , Ethos1) ^ cooperate(Polites , SecureCity)
+log(0.48) individual_ethos(Polites , Ethos2) ^ cooperate(Polites , SecureCity)
+		
+traitor(x) <=> ((EXIST g (group_goal(Citizens, g) ^ !cooperate(x,g)))).
+
+//Definitions
+individual_ethos(x, Ethos1) <=>  
+    (!historic(x) ^ ck(Citizens, group_goal(Citizen, SecureCity)) => 
+                                                cooperate(x, SecureCity)).
+
+individual_ethos(x, Ethos2) <=> 
+    (!historic(x) ^ ck(Citizens, group_goal(Citizen, SecureCity)) ^ 
+                                institutional_ethos(Court, Ethos3) => 
+                                                    cooperate(x, SecureCity)).
+
+institutional_ethos(Court, Ethos3) <=>
+    (!(EXIST x (traitor(x) ^ prosecuted(x) ^ !convicted(x)))).
+
+
+
